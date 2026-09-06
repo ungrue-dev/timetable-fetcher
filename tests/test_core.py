@@ -244,6 +244,55 @@ class FetchTests(unittest.TestCase):
             ["https://sb.bsu.by/raspisanie/map-653__engl_.xml"] * 2,
         )
 
+    def test_direct_and_wrapped_timeouts_use_html_relay(self) -> None:
+        for error in (TimeoutError("timed out"), URLError(TimeoutError("timed out"))):
+            with self.subTest(error=error):
+                urls = []
+
+                def opener(request, **kwargs):
+                    urls.append(request.full_url)
+                    if len(urls) == 1:
+                        raise error
+                    return FakeResponse("расписание".encode())
+
+                self.assertEqual(fetch_html(opener=opener, attempts=1), "расписание")
+                self.assertEqual(urls, [
+                    "https://sb.bsu.by/raspisanie/map-653__engl_.xml",
+                    "https://r.jina.ai/https://sb.bsu.by/raspisanie/map-653__engl_.xml",
+                ])
+
+    def test_relay_timeout_is_retried_with_bounded_attempts(self) -> None:
+        urls = []
+        delays = []
+
+        def opener(request, **kwargs):
+            urls.append(request.full_url)
+            raise TimeoutError("timed out")
+
+        with self.assertRaisesRegex(FetchError, "timed out"):
+            fetch_html(opener=opener, attempts=2, sleep=delays.append)
+        self.assertEqual(len(urls), 3)
+        self.assertTrue(all(url.startswith("https://r.jina.ai/") for url in urls[1:]))
+        self.assertEqual(delays, [1])
+
+    def test_custom_source_timeouts_and_certificate_errors_do_not_use_relay(self) -> None:
+        cases = [
+            ("https://example.test/timetable", TimeoutError("timed out")),
+            ("https://sb.bsu.by/raspisanie/map-653__engl_.xml",
+             URLError(ssl.SSLCertVerificationError("untrusted certificate"))),
+        ]
+        for url, error in cases:
+            with self.subTest(url=url, error=error):
+                urls = []
+
+                def opener(request, **kwargs):
+                    urls.append(request.full_url)
+                    raise error
+
+                with self.assertRaises(FetchError):
+                    fetch_html(url, opener=opener, attempts=1)
+                self.assertEqual(urls, [url])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, time, timedelta
 from html.parser import HTMLParser
 import json
+import logging
 import os
 from pathlib import Path
 import re
@@ -391,8 +392,11 @@ def fetch_html(
             if (
                 active_request is request
                 and relay_request is not None
-                and _is_tls_protocol_error(error)
+                and _can_use_html_relay(error)
             ):
+                logging.getLogger(__name__).warning(
+                    "Direct BSU request failed; trying HTTPS HTML relay: %s", error
+                )
                 active_request = relay_request
                 try:
                     with opener(active_request, timeout=timeout) as response:  # type: ignore[attr-defined]
@@ -421,10 +425,12 @@ def fetch_html(
     ) from last_error
 
 
-def _is_tls_protocol_error(error: Exception) -> bool:
-    """Return whether an HTTPS failure indicates a server protocol mismatch."""
+def _can_use_html_relay(error: Exception) -> bool:
+    """Use the public HTML relay for protocol mismatches and timed-out connections."""
 
     reason = error.reason if isinstance(error, URLError) else error
+    if isinstance(reason, TimeoutError):
+        return True
     return isinstance(reason, ssl.SSLError) and any(
         marker in str(reason).upper()
         for marker in ("WRONG_VERSION_NUMBER", "PROTOCOL_VERSION")

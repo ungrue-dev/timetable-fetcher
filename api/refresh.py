@@ -69,12 +69,14 @@ class handler(BaseHTTPRequestHandler):
             return
         try:
             payload = refresh()
-        except FetchError:
+        except FetchError as error:
+            logging.warning("BSU fetch failed: %s", error)
             self._json(HTTPStatus.BAD_GATEWAY, {
                 "code": "upstream_unavailable",
                 "error": "Сервер расписания БГУ сейчас недоступен. Попробуйте ещё раз немного позже.",
             })
-        except ParseError:
+        except ParseError as error:
+            logging.warning("BSU parsing failed: %s", error)
             self._json(HTTPStatus.BAD_GATEWAY, {
                 "code": "invalid_upstream_response",
                 "error": "БГУ вернул расписание в неожиданном формате.",

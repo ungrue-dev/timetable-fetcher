@@ -41,7 +41,7 @@ Each refresh:
 - downloads the group 653 page with a trusted CA bundle, a 20-second timeout,
   and up to three attempts;
 - falls back to Jina Reader's HTTPS HTML relay only when the official BSU host
-  rejects the client's TLS protocol; the relayed page is public timetable data
+  rejects the client's TLS protocol or the connection times out; the relayed page is public timetable data
   and is still parsed and validated before it can replace the snapshot;
 - discovers all week identifiers currently published by BSU, including weeks
   added after this application was written;
@@ -124,7 +124,7 @@ The source URL looks like XML but returns HTML:
 ## Troubleshooting
 
 If the interface says that BSU's timetable server is unavailable, neither the
-official endpoint nor (for a TLS protocol mismatch) the secure HTML relay could
+official endpoint nor (for a TLS protocol mismatch or timeout) the secure HTML relay could
 return the page after all retries. The application will continue showing the
 last valid snapshot and will not overwrite it. Wait a few minutes and press
 **Fetch timetable** again; certificate verification should not be disabled.
