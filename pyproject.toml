@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bsu-timetable-fetcher"
+version = "1.0.0"
+description = "Local web timetable for BSU group 653"
+requires-python = ">=3.11"
+dependencies = ["certifi>=2024.7.4"]
+
+[project.scripts]
+bsu-timetable = "timetable_fetcher.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["timetable_fetcher*"]

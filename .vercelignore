@@ -1,0 +1,12 @@
+.git
+.github
+.agents
+.codex
+.venv
+.venv-1
+**/__pycache__
+*.egg-info
+tests
+.env
+.env.*
+.vercel

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#fafaf7">
+    <meta
+      name="description"
+      content="Расписание группы 653 БГУ с временем начала и окончания занятий."
+    >
+    <title>Группа 653 — Расписание</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2335634d'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='Arial' font-size='24' font-weight='700' fill='white'%3E653%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.mjs"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Перейти к расписанию</a>
+
+    <header class="masthead">
+      <a class="brand" href="./" aria-label="Расписание группы 653">
+        <span class="brand-mark">653</span>
+        <span class="brand-copy">Расписание БГУ</span>
+      </a>
+
+      <div class="masthead-meta" aria-live="polite">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="connection-status">Загрузка данных</span>
+      </div>
+
+      <button class="fetch-button" id="fetch-button" type="button">
+        <span id="fetch-label">Обновить</span>
+      </button>
+    </header>
+
+    <main id="main-content">
+      <section class="date-band" aria-labelledby="page-date">
+        <h1 id="page-date">Загрузка расписания…</h1>
+        <p class="group-name" id="group-name">Группа 653</p>
+      </section>
+
+      <div class="notice" id="notice" role="status" aria-live="polite" hidden>
+        <span id="notice-text"></span>
+        <button id="notice-retry" type="button">Повторить</button>
+      </div>
+
+      <section class="live-panel" id="live-panel" aria-labelledby="live-heading" aria-live="polite">
+        <div class="live-state">
+          <p class="eyebrow" id="live-kicker">Проверка расписания</p>
+          <h2 id="live-heading">—</h2>
+          <p class="live-countdown" id="live-countdown">Подождите</p>
+        </div>
+        <div class="live-details" id="live-details">
+          <p>Загружаем сохранённое расписание.</p>
+        </div>
+      </section>
+
+      <section class="today-section section-shell" aria-labelledby="today-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="today-heading">Сегодня</h2>
+          </div>
+          <p class="section-aside" id="today-count">—</p>
+        </div>
+        <div class="timeline" id="today-list" aria-live="polite">
+          <div class="skeleton skeleton-row"></div>
+          <div class="skeleton skeleton-row"></div>
+        </div>
+      </section>
+
+      <section class="schedule-section section-shell" aria-labelledby="schedule-heading">
+        <div class="section-heading schedule-title-row">
+          <div>
+            <h2 id="schedule-heading">Расписание</h2>
+          </div>
+          <div class="filters" aria-label="Фильтр подгруппы">
+            <span class="filter-label">Подгруппа</span>
+            <button type="button" data-filter="all" aria-pressed="true">Все</button>
+            <button type="button" data-filter="1" aria-label="Подгруппа 1" aria-pressed="false">1</button>
+            <button type="button" data-filter="2" aria-label="Подгруппа 2" aria-pressed="false">2</button>
+          </div>
+        </div>
+
+        <nav class="week-nav" id="week-nav" aria-label="Доступные недели"></nav>
+        <div class="week-grid" id="week-grid">
+          <div class="skeleton skeleton-day"></div>
+          <div class="skeleton skeleton-day"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <span>Источник</span>
+        <a id="source-link" href="https://sb.bsu.by/raspisanie/map-653__engl_.xml" target="_blank" rel="noreferrer">БГУ</a>
+      </div>
+      <div>
+        <span>Обновлено в БГУ</span>
+        <time id="source-updated">—</time>
+      </div>
+      <div>
+        <span>Сохранено</span>
+        <time id="published-at">—</time>
+      </div>
+    </footer>
+
+    <noscript>
+      <p class="noscript">Для отображения расписания требуется JavaScript.</p>
+    </noscript>
+  </body>
+</html>
