@@ -43,6 +43,7 @@ Each refresh:
 - falls back to Jina Reader's HTTPS HTML relay only when the official BSU host
   rejects the client's TLS protocol or the connection times out; the relayed page is public timetable data
   and is still parsed and validated before it can replace the snapshot;
+- bypasses the relay's cached HTML so a refresh retrieves newly published lessons;
 - discovers all week identifiers currently published by BSU, including weeks
   added after this application was written;
 - parses every class and calculates its timezone-aware end time;

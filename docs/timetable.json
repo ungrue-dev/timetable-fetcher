@@ -7,8 +7,8 @@
   "source_url": "https://sb.bsu.by/raspisanie/map-653__engl_.xml",
   "timezone": "Europe/Minsk",
   "class_duration_minutes": 85,
-  "source_updated_at": "2026-09-04T15:51:00+03:00",
-  "published_at": "2026-09-05T11:26:56+03:00",
+  "source_updated_at": "2026-09-07T14:06:00+03:00",
+  "published_at": "2026-09-07T14:24:43+03:00",
   "weeks": [
     {
       "starts_on": "2026-08-31",
@@ -163,6 +163,16 @@
               "ends_at": "2026-09-03T18:25:00+03:00",
               "subject": "Concepts of Digital Business (Lecture)",
               "teacher": "Зубарев Андрей Васильевич",
+              "room": "ул. Московская 15а , 22",
+              "subgroup": null
+            },
+            {
+              "start_time": "18:35",
+              "end_time": "20:00",
+              "starts_at": "2026-09-03T18:35:00+03:00",
+              "ends_at": "2026-09-03T20:00:00+03:00",
+              "subject": "Information hour (Consultation)",
+              "teacher": "Толочко Дарья Андреевна",
               "room": "ул. Московская 15а , 22",
               "subgroup": null
             }
@@ -428,6 +438,16 @@
               "ends_at": "2026-09-10T18:25:00+03:00",
               "subject": "Concepts of Digital Business (Lecture)",
               "teacher": "Зубарев Андрей Васильевич",
+              "room": "ул. Московская 15а , 22",
+              "subgroup": null
+            },
+            {
+              "start_time": "18:35",
+              "end_time": "20:00",
+              "starts_at": "2026-09-10T18:35:00+03:00",
+              "ends_at": "2026-09-10T20:00:00+03:00",
+              "subject": "Information hour (Consultation)",
+              "teacher": "Толочко Дарья Андреевна",
               "room": "ул. Московская 15а , 22",
               "subgroup": null
             }

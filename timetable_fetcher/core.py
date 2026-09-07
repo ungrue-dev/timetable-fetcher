@@ -366,6 +366,8 @@ def fetch_html(
                 "User-Agent": USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml",
                 "X-Return-Format": "html",
+                # Reader's cached HTML can predate newly published lessons.
+                "X-No-Cache": "true",
             },
         )
     if opener is None:

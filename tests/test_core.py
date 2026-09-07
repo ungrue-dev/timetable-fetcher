@@ -175,6 +175,37 @@ class SnapshotTests(unittest.TestCase):
 
 
 class FetchTests(unittest.TestCase):
+    def test_relay_refresh_bypasses_stale_html_and_publishes_new_lesson(self) -> None:
+        cached = FIXTURE.read_text(encoding="utf-8")
+        fresh = cached.replace("</tbody>", """
+          <tr vl="07.09.2026">
+            <td>18:35<br></td><td>Information hour (Consultation)</td>
+            <td>Новый преподаватель</td><td>Новая аудитория</td>
+          </tr>
+        </tbody>
+        """)
+
+        def opener(request, **kwargs):
+            if request.full_url.startswith("https://sb.bsu.by/"):
+                raise TimeoutError("timed out")
+            html = fresh if request.get_header("X-no-cache") == "true" else cached
+            return FakeResponse(html.encode())
+
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "timetable.json"
+            update_snapshot(output, cached, published_at=PUBLISHED)
+            self.assertTrue(refresh_snapshot(
+                output, opener=opener, attempts=1, published_at=PUBLISHED,
+            ))
+            payload = json.loads(output.read_text(encoding="utf-8"))
+            subjects = [
+                event["subject"]
+                for week in payload["weeks"]
+                for day in week["days"]
+                for event in day["classes"]
+            ]
+            self.assertIn("Information hour (Consultation)", subjects)
+
     def test_fetch_retries_then_succeeds(self) -> None:
         attempts = 0
         delays: list[float] = []
